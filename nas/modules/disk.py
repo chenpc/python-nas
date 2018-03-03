@@ -22,5 +22,17 @@ class Disk(LarvaObject):
             NameError(str): Status is not exist
         """
 
-        output = json.loads(exec_command('lsblk -J').stdout)['blockdevices']
+        lsblk_output = json.loads(exec_command('lsblk -JO').stdout)['blockdevices']
+        output = OrderedDict()
+        for dev in lsblk_output:
+            disk = OrderedDict()
+            disk['size'] = dev['size']
+            disk['type'] = dev['type']
+            disk['mountpoint'] = dev['mountpoint']
+            disk['label'] = dev['label']
+            disk['model'] = dev['model']
+            disk['serial'] = dev['serial']
+
+            output[dev['name']] = disk
+
         return output
