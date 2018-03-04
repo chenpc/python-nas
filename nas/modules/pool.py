@@ -92,6 +92,7 @@ class Pool(LarvaObject):
             raise TypeError("RAID type: %s is invalid" % raid_type)
 
         exec_command('zpool create -f %s %s %s' %(name, raid_type, " ".join(disk_list)))
+        exec_command('zfs set sharesmb=on %s' % name)
 
     def destroy(self, name):
         """Create pool

@@ -70,7 +70,8 @@ class Network(LarvaObject):
         if dev is None:
             raise NameError('no such interface', ifname)
 
-        dev.ActiveConnection.Connection.Delete()
+        if dev.ActiveConnection:
+            dev.ActiveConnection.Connection.Delete()
 
         new_connection_setting = {
             'ipv4': {
