@@ -50,9 +50,14 @@ class Network(LarvaObject):
         net_list = OrderedDict()
         for dev in get_dev_list():
             netif = OrderedDict()
-            netif['Addresses'] = dev.Ip4Config.Addresses[0][0]
-            netif['Netmask'] = dev.Ip4Config.Addresses[0][1]
-            netif['Gateway'] = dev.Ip4Config.Gateway
+            if dev.Ip4Config.Addresses:
+                netif['Addresses'] = dev.Ip4Config.Addresses[0][0]
+                netif['Netmask'] = dev.Ip4Config.Addresses[0][1]
+                netif['Gateway'] = dev.Ip4Config.Gateway
+            else:
+                netif['Addresses'] = ""
+                netif['Netmask'] = ""
+                netif['Gateway'] = ""
             netif['HwAddress'] = dev.HwAddress
             netif['State'] = DeviceState(dev.State).name
             net_list[dev.Interface] = netif
